@@ -40,7 +40,9 @@ public class UserService implements UserDetailsService {
         } else {
             log.info("User znaleziony w bazie");
         }
-        Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
+//        Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
+//        authorities.add(new SimpleGrantedAuthority(user.getRole()));
+        List<GrantedAuthority> authorities = new ArrayList<>();
         authorities.add(new SimpleGrantedAuthority(user.getRole()));
 
         return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(), authorities);
