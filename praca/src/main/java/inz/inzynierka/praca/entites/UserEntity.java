@@ -1,7 +1,5 @@
 package inz.inzynierka.praca.entites;
 
-import org.springframework.boot.CommandLineRunner;
-
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.persistence.Id;
@@ -21,30 +19,35 @@ public class UserEntity{
     private String password;
     private String name;
     private String lastname;
+    private String role;
 
-    public UserEntity(Long account_id, String email, String password, String name, String lastname) {
+
+
+    public UserEntity(Long account_id, String email, String password, String name, String lastname, String role) {
         this.account_id = account_id;
         this.email = email;
         this.password = password;
         this.name = name;
         this.lastname = lastname;
+        this.role = role;
     }
 
     public UserEntity() {
 
     }
 
-
-    @java.lang.Override
-    public java.lang.String toString() {
+    @Override
+    public String toString() {
         return "UserEntity{" +
                 "account_id=" + account_id +
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
                 ", name='" + name + '\'' +
                 ", lastname='" + lastname + '\'' +
+                ", role='" + role + '\'' +
                 '}';
     }
+
     public Long getAccount_id() {
         return account_id;
     }
@@ -83,6 +86,14 @@ public class UserEntity{
 
     public void setLastname(String lastname) {
         this.lastname = lastname;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
     }
 
 }
