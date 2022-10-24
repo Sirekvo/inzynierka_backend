@@ -2,6 +2,8 @@ package inz.inzynierka.praca.secruity;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 //import inz.inzynierka.praca.services.UserService;
+import inz.inzynierka.praca.services.UserServiceImpl;
+import inz.inzynierka.praca.services.UserServices;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -16,7 +18,11 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.filter.CorsFilter;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -29,6 +35,8 @@ public class SecruityConfig extends WebSecurityConfigurerAdapter {
 
 //    private final UserService userService;
     private final UserDetailsService userDetailsService;
+    private final jwtTokenVerifier jwtTokenVerifier;
+
     @Bean
     public PasswordEncoder passwordEncoder()
     {
@@ -47,6 +55,7 @@ public class SecruityConfig extends WebSecurityConfigurerAdapter {
         http.sessionManagement().sessionCreationPolicy(STATELESS);
         http.authorizeRequests().anyRequest().permitAll();
         http.addFilter(new AuthenticationFilter(authenticationManagerBean()));
+        http.addFilterAfter(jwtTokenVerifier, AuthenticationFilter.class);
 //        http.authorizeRequests()
 //                .antMatchers(HttpMethod.POST,"/login").permitAll()
 //                .anyRequest().authenticated()
@@ -69,4 +78,19 @@ public class SecruityConfig extends WebSecurityConfigurerAdapter {
     public AuthenticationManager authenticationManagerBean() throws Exception{
         return super.authenticationManagerBean();
     }
+
+//    @Bean
+//    public CorsFilter corsFilter() {
+//        final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+//
+//        final CorsConfiguration config = new CorsConfiguration();
+//        config.setAllowCredentials(false);
+//        config.setAllowedOrigins(Arrays.asList("*"));
+//        config.setAllowedHeaders(Arrays.asList("*"));
+//        config.setAllowedMethods(Arrays.asList("*"));
+//
+//        source.registerCorsConfiguration("/**", config);
+//
+//        return new CorsFilter(source);
+//    }
 }
