@@ -1,7 +1,7 @@
 package inz.inzynierka.praca.secruity;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import inz.inzynierka.praca.services.UserService;
+//import inz.inzynierka.praca.services.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -27,7 +27,7 @@ import static org.springframework.security.config.http.SessionCreationPolicy.STA
 @RequiredArgsConstructor
 public class SecruityConfig extends WebSecurityConfigurerAdapter {
 
-    private final UserService userService;
+//    private final UserService userService;
     private final UserDetailsService userDetailsService;
     @Bean
     public PasswordEncoder passwordEncoder()
@@ -43,23 +43,25 @@ public class SecruityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.cors().and().csrf().disable();
+        http.csrf().disable();
         http.sessionManagement().sessionCreationPolicy(STATELESS);
-        http.authorizeRequests()
-                .antMatchers(HttpMethod.POST,"/login").permitAll()
-                .anyRequest().authenticated()
-                .and().exceptionHandling().authenticationEntryPoint((request, response, authException) -> {
-
-                    Map<String, Object> responseMap = new HashMap<>();
-                    ObjectMapper mapper = new ObjectMapper();
-                    response.setStatus(401);
-                    responseMap.put("error", true);
-                    responseMap.put("message", "Unauthorized");
-                    response.setHeader("content-type", "application/json");
-                    String responseMsg = mapper.writeValueAsString(responseMap);
-                    response.getWriter().write(responseMsg);
-
-                }).and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().addFilter(new AuthenticationFilter(authenticationManagerBean()));
+        http.authorizeRequests().anyRequest().permitAll();
+        http.addFilter(new AuthenticationFilter(authenticationManagerBean()));
+//        http.authorizeRequests()
+//                .antMatchers(HttpMethod.POST,"/login").permitAll()
+//                .anyRequest().authenticated()
+//                .and().exceptionHandling().authenticationEntryPoint((request, response, authException) -> {
+//
+//                    Map<String, Object> responseMap = new HashMap<>();
+//                    ObjectMapper mapper = new ObjectMapper();
+//                    response.setStatus(401);
+//                    responseMap.put("error", true);
+//                    responseMap.put("message", "Unauthorized");
+//                    response.setHeader("content-type", "application/json");
+//                    String responseMsg = mapper.writeValueAsString(responseMap);
+//                    response.getWriter().write(responseMsg);
+//
+//                }).and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().addFilter(new AuthenticationFilter(authenticationManagerBean()));
     }
 
     @Bean
