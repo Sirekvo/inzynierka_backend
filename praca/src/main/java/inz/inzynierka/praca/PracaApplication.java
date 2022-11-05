@@ -8,6 +8,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.cors.CorsConfiguration;
@@ -18,6 +19,7 @@ import java.util.Arrays;
 import java.util.List;
 
 @SpringBootApplication
+@EnableWebSecurity
 public class PracaApplication{
     public static void main(String[] args) {
         SpringApplication.run(PracaApplication.class, args);
@@ -39,20 +41,20 @@ public class PracaApplication{
 //        urlBasedCorsConfigurationSource.registerCorsConfiguration("/**", corsConfiguration);
 //        return new CorsFilter(urlBasedCorsConfigurationSource);
 //    }
-@Bean
-public CorsFilter corsFilter() {
-    final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-
-    final CorsConfiguration config = new CorsConfiguration();
-    config.setAllowCredentials(false);
-    config.setAllowedOrigins(Arrays.asList("*"));
-    config.setAllowedHeaders(Arrays.asList("*"));
-    config.setAllowedMethods(Arrays.asList("*"));
-
-    source.registerCorsConfiguration("/**", config);
-
-    return new CorsFilter(source);
-}
+//@Bean
+//public CorsFilter corsFilter() {
+//    final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+//
+//    final CorsConfiguration config = new CorsConfiguration();
+//    config.setAllowCredentials(false);
+//    config.setAllowedOrigins(Arrays.asList("*"));
+//    config.setAllowedHeaders(Arrays.asList("*"));
+//    config.setAllowedMethods(Arrays.asList("*"));
+//
+//    source.registerCorsConfiguration("/**", config);
+//
+//    return new CorsFilter(source);
+//}
 
 
 }
