@@ -1,6 +1,8 @@
 package inz.inzynierka.praca.services;
 
+import inz.inzynierka.praca.entites.SeriesEntity;
 import inz.inzynierka.praca.entites.UserEntity;
+import inz.inzynierka.praca.repositories.SeriesRepository;
 import inz.inzynierka.praca.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -18,11 +20,16 @@ import java.util.List;
 @Service @RequiredArgsConstructor @Transactional @Slf4j
 public class UserServiceImpl implements UserServices, UserDetailsService {
     private final UserRepository userRepository;
-
+    private final SeriesRepository seriesRepository;
 
     @Override
     public UserEntity saveUser(UserEntity userEntity) {
         return userRepository.save(userEntity);
+    }
+
+    @Override
+    public SeriesEntity saveSeries(SeriesEntity seriesEntity) {
+        return seriesRepository.save(seriesEntity);
     }
 
     @Override
