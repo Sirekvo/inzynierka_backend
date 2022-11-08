@@ -14,23 +14,23 @@ public class SeriesEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long series_id;
-    private String header;
     private String title;
     private String creator;
     private String genre;
     private String production;
-    private Date premiere;
+    private String premiere;
     private String description;
+    private String url;
 
-    public SeriesEntity(Long series_id, String header, String title, String creator, String genre, String production, Date premiere, String description) {
+    public SeriesEntity(Long series_id, String title, String creator, String genre, String production, String premiere, String description, String url) {
         this.series_id = series_id;
-        this.header = header;
         this.title = title;
         this.creator = creator;
         this.genre = genre;
         this.production = production;
         this.premiere = premiere;
         this.description = description;
+        this.url = url;
     }
 
     public SeriesEntity() {
@@ -45,13 +45,6 @@ public class SeriesEntity {
         this.series_id = series_id;
     }
 
-    public String getHeader() {
-        return header;
-    }
-
-    public void setHeader(String header) {
-        this.header = header;
-    }
 
     public String getTitle() {
         return title;
@@ -85,11 +78,11 @@ public class SeriesEntity {
         this.production = production;
     }
 
-    public Date getPremiere() {
+    public String getPremiere() {
         return premiere;
     }
 
-    public void setPremiere(Date premiere) {
+    public void setPremiere(String premiere) {
         this.premiere = premiere;
     }
 
@@ -99,5 +92,13 @@ public class SeriesEntity {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getImageUrl() {
+        return url;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.url = url;
     }
 }

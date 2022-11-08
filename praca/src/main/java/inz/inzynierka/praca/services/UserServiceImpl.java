@@ -27,6 +27,13 @@ public class UserServiceImpl implements UserServices, UserDetailsService {
         return userRepository.save(userEntity);
     }
 
+//    @Override
+//    public void saveSeries(List<SeriesEntity> series) {
+//        for (SeriesEntity x : series) {
+//            seriesRepository.save(x.getTitle(), x.getCreator(), x.getGenre(), x.getProduction(), x.getPremiere(), x.getDescription());
+//        }
+//    }
+
     @Override
     public SeriesEntity saveSeries(SeriesEntity seriesEntity) {
         return seriesRepository.save(seriesEntity);
