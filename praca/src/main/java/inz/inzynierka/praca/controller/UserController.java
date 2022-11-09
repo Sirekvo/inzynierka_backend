@@ -48,10 +48,10 @@ public class  UserController {
         userServices.updatePost(series);
     }
 
-//    @GetMapping("/series/{series_id}")
-//    public Optional<SeriesEntity> getSeries(@PathVariable("series_id") Long id){
-//        return seriesRepository.findById(id);
-//    }
+    @GetMapping("/series/{series_id}")
+    public Optional<SeriesEntity> getSeries(@PathVariable("series_id") Long id){
+        return seriesRepository.findById(id);
+    }
 //    @PostMapping("/user/save")
 //    public ResponseEntity<UserEntity>saveUser(@RequestBody UserEntity user){
 //        URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/user/save").toString());
