@@ -8,7 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import javax.transaction.Transactional;
 import java.time.LocalDate;
 
-public interface SeriesRepository extends JpaRepository<SeriesEntity, String> {
+public interface SeriesRepository extends JpaRepository<SeriesEntity, Long> {
 
     String sql = "INSERT INTO series (series_id, header, title, creator, genre, production, premiere, description) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
