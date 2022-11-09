@@ -94,11 +94,11 @@ public class SeriesEntity {
         this.description = description;
     }
 
-    public String getImageUrl() {
+    public String getUrl() {
         return url;
     }
 
-    public void setImageUrl(String imageUrl) {
+    public void setUrl(String url) {
         this.url = url;
     }
 }
