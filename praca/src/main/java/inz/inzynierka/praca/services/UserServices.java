@@ -6,6 +6,6 @@ import inz.inzynierka.praca.entites.UserEntity;
 public interface UserServices {
     UserEntity saveUser(UserEntity userEntity);
     SeriesEntity saveSeries(SeriesEntity seriesEntity);
-//    SeriesEntity getSeries(Long id);
+    void updatePost(SeriesEntity seriesEntity);
 
 }

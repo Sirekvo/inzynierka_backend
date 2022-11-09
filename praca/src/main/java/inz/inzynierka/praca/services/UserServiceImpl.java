@@ -16,7 +16,6 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service @RequiredArgsConstructor @Transactional @Slf4j
 public class UserServiceImpl implements UserServices, UserDetailsService {
@@ -40,18 +39,11 @@ public class UserServiceImpl implements UserServices, UserDetailsService {
         return seriesRepository.save(seriesEntity);
     }
 
-//    @Override
-//    public SeriesEntity getSeries(Long id) {
-//        Optional<SeriesEntity> studentResponse =  seriesRepository.findById(id);
-//        SeriesEntity series = null;
-//        if(studentResponse.isPresent()) {
-//            series = studentResponse.get();
-//        }else {
-//            throw new RuntimeException("No record found for given id: "+id);
-//        }
-//
-//        return series;
-//    }
+    @Override
+    public void updatePost(SeriesEntity series) {
+        seriesRepository.updatePost(series.getSeries_id(),series.getTitle(),series.getCreator(),series.getGenre(),
+                series.getProduction(),series.getPremiere(),series.getDescription(),series.getUrl());
+    }
 
 
     @Override

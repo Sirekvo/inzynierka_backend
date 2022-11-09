@@ -43,6 +43,11 @@ public class  UserController {
     public void deleteSeries(@PathVariable("series_id") Long id){
         seriesRepository.deleteById(id);
     }
+    @PutMapping("change-post")
+    public void changePost(@RequestBody SeriesEntity series) {
+        userServices.updatePost(series);
+    }
+
 //    @GetMapping("/series/{series_id}")
 //    public Optional<SeriesEntity> getSeries(@PathVariable("series_id") Long id){
 //        return seriesRepository.findById(id);
