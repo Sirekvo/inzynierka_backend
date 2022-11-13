@@ -45,6 +45,11 @@ public class UserServiceImpl implements UserServices, UserDetailsService {
                 series.getProduction(),series.getPremiere(),series.getDescription(),series.getUrl());
     }
 
+    @Override
+    public List<SeriesEntity> searchByTitle(String title) {
+        return seriesRepository.searchByTitle(title);
+    }
+
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {

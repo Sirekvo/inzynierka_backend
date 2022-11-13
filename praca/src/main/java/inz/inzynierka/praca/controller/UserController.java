@@ -6,13 +6,9 @@ import inz.inzynierka.praca.repositories.SeriesRepository;
 import inz.inzynierka.praca.repositories.UserRepository;
 //import inz.inzynierka.praca.services.UserService;
 import inz.inzynierka.praca.services.UserServices;
-import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 
@@ -51,6 +47,13 @@ public class  UserController {
     @GetMapping("/series/{series_id}")
     public Optional<SeriesEntity> getSeries(@PathVariable("series_id") Long id){
         return seriesRepository.findById(id);
+    }
+
+    @GetMapping("/findBy/{title}")
+    public List<SeriesEntity> getSeriesByTitle(@PathVariable("title") String title){
+
+        return userServices.searchByTitle(title);
+//        return seriesRepository.findByTitleStartingWith(title);
     }
 //    @PostMapping("/user/save")
 //    public ResponseEntity<UserEntity>saveUser(@RequestBody UserEntity user){
