@@ -8,11 +8,13 @@ import inz.inzynierka.praca.repositories.SlidersRepository;
 import inz.inzynierka.praca.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -24,9 +26,18 @@ public class UserServiceImpl implements UserServices, UserDetailsService {
     private final UserRepository userRepository;
     private final SeriesRepository seriesRepository;
     private final SlidersRepository slidersRepository;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @Override
-    public UserEntity saveUser(UserEntity userEntity) {
+    public UserEntity saveUser(UserEntity user) {
+        UserEntity userEntity = new UserEntity();
+        userEntity.setEmail(user.getEmail());
+        userEntity.setPassword(passwordEncoder.encode(user.getPassword()));
+        userEntity.setName(user.getName());
+        userEntity.setLastname(user.getLastname());
+        userEntity.setRole(user.getRole());
+
         return userRepository.save(userEntity);
     }
 

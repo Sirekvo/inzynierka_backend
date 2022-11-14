@@ -38,7 +38,7 @@ public class SecruityConfig extends WebSecurityConfigurerAdapter {
     private final jwtTokenVerifier jwtTokenVerifier;
 
     @Bean
-    public PasswordEncoder passwordEncoder()
+    public static PasswordEncoder passwordEncoder()
     {
         return new BCryptPasswordEncoder();
     }

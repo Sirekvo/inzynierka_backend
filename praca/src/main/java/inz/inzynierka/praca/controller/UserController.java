@@ -30,6 +30,10 @@ public class  UserController {
     public List<UserEntity> getUsers(){
         return userRepository.findAll();
     }
+    @PostMapping("/user")
+    public void createUser(@RequestBody UserEntity userEntity){
+        userServices.saveUser(userEntity);
+    }
 
 
 //    @PostMapping("/user/save")
