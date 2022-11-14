@@ -1,8 +1,10 @@
 package inz.inzynierka.praca.services;
 
 import inz.inzynierka.praca.entites.SeriesEntity;
+import inz.inzynierka.praca.entites.SlidersEntity;
 import inz.inzynierka.praca.entites.UserEntity;
 import inz.inzynierka.praca.repositories.SeriesRepository;
+import inz.inzynierka.praca.repositories.SlidersRepository;
 import inz.inzynierka.praca.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,6 +23,7 @@ import java.util.List;
 public class UserServiceImpl implements UserServices, UserDetailsService {
     private final UserRepository userRepository;
     private final SeriesRepository seriesRepository;
+    private final SlidersRepository slidersRepository;
 
     @Override
     public UserEntity saveUser(UserEntity userEntity) {
@@ -48,6 +51,11 @@ public class UserServiceImpl implements UserServices, UserDetailsService {
     @Override
     public List<SeriesEntity> searchByTitle(String title) {
         return seriesRepository.searchByTitle(title);
+    }
+
+    @Override
+    public SlidersEntity saveSlider(SlidersEntity slidersEntity) {
+        return slidersRepository.save(slidersEntity);
     }
 
 
