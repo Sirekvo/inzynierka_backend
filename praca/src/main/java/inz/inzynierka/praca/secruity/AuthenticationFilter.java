@@ -5,6 +5,9 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.fasterxml.jackson.databind.ObjectMapper;
 //import inz.inzynierka.praca.services.UserService;
 import com.google.gson.JsonObject;
+import inz.inzynierka.praca.GlobalVariables;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.security.Keys;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -78,6 +81,7 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
                 .withExpiresAt(new Date(System.currentTimeMillis() + 10 * 60 * 1000))
                 .withIssuer(request.getRequestURL().toString())
                 .withClaim("roles", user.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList())).sign(algorithm);
+//        String access_token = Jwts.builder().setSubject(authentication.getName()).claim("UserRole", authentication.getAuthorities()).setIssuedAt(new Date()).setExpiration(new Date(System.currentTimeMillis() + time)).signWith(Keys.hmacShaKeyFor(GlobalVariables.getToken_key().getBytes())).compact();
 
         response.setHeader("token",access_token);
         response.setContentType("application/json");

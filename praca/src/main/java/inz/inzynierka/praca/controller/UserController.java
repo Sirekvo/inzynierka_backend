@@ -1,7 +1,5 @@
 package inz.inzynierka.praca.controller;
 
-import inz.inzynierka.praca.entites.SeriesEntity;
-import inz.inzynierka.praca.entites.SlidersEntity;
 import inz.inzynierka.praca.entites.UserEntity;
 import inz.inzynierka.praca.repositories.SeriesRepository;
 import inz.inzynierka.praca.repositories.SlidersRepository;
@@ -10,9 +8,9 @@ import inz.inzynierka.praca.repositories.UserRepository;
 import inz.inzynierka.praca.services.UserServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import java.security.Principal;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 public class  UserController {
@@ -26,7 +24,7 @@ public class  UserController {
     @Autowired
     UserServices userServices;
 
-    @GetMapping("/user")
+    @GetMapping("/users")
     public List<UserEntity> getUsers(){
         return userRepository.findAll();
     }
@@ -34,7 +32,20 @@ public class  UserController {
     public void createUser(@RequestBody UserEntity userEntity){
         userServices.saveUser(userEntity);
     }
+    @PutMapping("/change-password")
+    public void changePassword(@RequestBody UserEntity userEntity ){
+        userServices.changePassword(userEntity);
+    }
+    @PutMapping("/change-information")
+    public void changeInformation(@RequestBody UserEntity userEntity ){
+        userServices.changeInformation(userEntity);
+    }
 
+
+    @DeleteMapping("/delete-user/{account_id}")
+    public void deleteUSer(@PathVariable("account_id") Long id){
+        userRepository.deleteById(id);
+    }
 
 //    @PostMapping("/user/save")
 //    public ResponseEntity<UserEntity>saveUser(@RequestBody UserEntity user){

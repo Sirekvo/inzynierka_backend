@@ -1,5 +1,6 @@
 package inz.inzynierka.praca.controller;
 
+import inz.inzynierka.praca.entites.CommentsEntity;
 import inz.inzynierka.praca.entites.SeriesEntity;
 import inz.inzynierka.praca.repositories.SeriesRepository;
 import inz.inzynierka.praca.repositories.SlidersRepository;
@@ -21,6 +22,7 @@ public class SeriesController {
     SlidersRepository slidersRepository;
     @Autowired
     UserServices userServices;
+
     @PostMapping("/series")
     public void setSeries(@RequestBody SeriesEntity series){
         userServices.saveSeries(series);
@@ -45,5 +47,13 @@ public class SeriesController {
     @GetMapping("/findBy/{title}")
     public List<SeriesEntity> getSeriesByTitle(@PathVariable("title") String title){
         return userServices.searchByTitle(title);
+    }
+    @PostMapping("/comment")
+    public void setComment(@RequestBody CommentsEntity commentsEntity){
+        userServices.saveComment(commentsEntity);
+    }
+    @GetMapping("/comment/{series_id}")
+    public List<CommentsEntity> getCommentsBySeriesId(@PathVariable("series_id") Long id){
+        return userServices.searchBySeriesId(id);
     }
 }

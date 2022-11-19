@@ -1,11 +1,15 @@
 package inz.inzynierka.praca.services;
 
+import com.google.gson.JsonObject;
+import inz.inzynierka.praca.entites.CommentsEntity;
 import inz.inzynierka.praca.entites.SeriesEntity;
 import inz.inzynierka.praca.entites.SlidersEntity;
 import inz.inzynierka.praca.entites.UserEntity;
+import inz.inzynierka.praca.repositories.CommentsRepository;
 import inz.inzynierka.praca.repositories.SeriesRepository;
 import inz.inzynierka.praca.repositories.SlidersRepository;
 import inz.inzynierka.praca.repositories.UserRepository;
+import inz.inzynierka.praca.secruity.JwTokenUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +30,7 @@ public class UserServiceImpl implements UserServices, UserDetailsService {
     private final UserRepository userRepository;
     private final SeriesRepository seriesRepository;
     private final SlidersRepository slidersRepository;
+    private final CommentsRepository commentsRepository;
     @Autowired
     private PasswordEncoder passwordEncoder;
 
@@ -40,13 +45,6 @@ public class UserServiceImpl implements UserServices, UserDetailsService {
 
         return userRepository.save(userEntity);
     }
-
-//    @Override
-//    public void saveSeries(List<SeriesEntity> series) {
-//        for (SeriesEntity x : series) {
-//            seriesRepository.save(x.getTitle(), x.getCreator(), x.getGenre(), x.getProduction(), x.getPremiere(), x.getDescription());
-//        }
-//    }
 
     @Override
     public SeriesEntity saveSeries(SeriesEntity seriesEntity) {
@@ -67,6 +65,26 @@ public class UserServiceImpl implements UserServices, UserDetailsService {
     @Override
     public SlidersEntity saveSlider(SlidersEntity slidersEntity) {
         return slidersRepository.save(slidersEntity);
+    }
+
+    @Override
+    public void changePassword(UserEntity userEntity) {
+        userRepository.changePassword(userEntity.getAccount_id(),passwordEncoder.encode(userEntity.getPassword()));
+    }
+
+    @Override
+    public void changeInformation(UserEntity userEntity) {
+        userRepository.changeInformation(userEntity.getAccount_id(), userEntity.getEmail(),userEntity.getName(),userEntity.getLastname());
+    }
+
+    @Override
+    public CommentsEntity saveComment(CommentsEntity commentsEntity) {
+        return commentsRepository.save(commentsEntity);
+    }
+
+    @Override
+    public List<CommentsEntity> searchBySeriesId(Long id) {
+        return commentsRepository.searchBySeriesId(id);
     }
 
 

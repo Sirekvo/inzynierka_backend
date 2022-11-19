@@ -57,6 +57,7 @@ public class SecruityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests().anyRequest().permitAll();
         http.addFilter(new AuthenticationFilter(authenticationManagerBean()));
         http.addFilterAfter(jwtTokenVerifier, AuthenticationFilter.class);
+
 //        http.authorizeRequests()
 //                .antMatchers(HttpMethod.POST,"/login").permitAll()
 //                .anyRequest().authenticated()
