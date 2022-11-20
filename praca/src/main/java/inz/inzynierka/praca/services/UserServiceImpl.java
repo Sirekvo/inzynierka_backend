@@ -68,13 +68,14 @@ public class UserServiceImpl implements UserServices, UserDetailsService {
     }
 
     @Override
-    public void changePassword(UserEntity userEntity) {
-        userRepository.changePassword(userEntity.getAccount_id(),passwordEncoder.encode(userEntity.getPassword()));
+    public void changePassword(UserEntity userEntity, String name) {
+        String databasePassword = userRepository.getPassword(name);
+        userRepository.changePassword(name,passwordEncoder.encode(databasePassword));
     }
 
     @Override
-    public void changeInformation(UserEntity userEntity) {
-        userRepository.changeInformation(userEntity.getAccount_id(), userEntity.getEmail(),userEntity.getName(),userEntity.getLastname());
+    public void changeInformation(UserEntity userEntity, String name) {
+        userRepository.changeInformation(name,userEntity.getEmail(),userEntity.getName(),userEntity.getLastname());
     }
 
     @Override
@@ -85,6 +86,26 @@ public class UserServiceImpl implements UserServices, UserDetailsService {
     @Override
     public List<CommentsEntity> searchBySeriesId(Long id) {
         return commentsRepository.searchBySeriesId(id);
+    }
+
+    @Override
+    public String getInformationAboutUser(String email) {
+        UserEntity user = userRepository.findByEmail(email);
+
+        JsonObject json = new JsonObject();
+        json.addProperty("account_id", user.getAccount_id());
+        json.addProperty("email", user.getEmail());
+        json.addProperty("password", user.getPassword());
+        json.addProperty("name", user.getName());
+        json.addProperty("lastname", user.getLastname());
+        json.addProperty("role", user.getRole());
+
+        return json.toString();
+    }
+
+    @Override
+    public void deleteUser(Long id) {
+        userRepository.deleteUser(id);
     }
 
 

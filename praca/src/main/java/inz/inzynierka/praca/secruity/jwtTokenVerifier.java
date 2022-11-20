@@ -1,9 +1,15 @@
 package inz.inzynierka.praca.secruity;
 
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.JWTVerifier;
+import com.auth0.jwt.algorithms.Algorithm;
+import com.auth0.jwt.interfaces.DecodedJWT;
+import com.google.gson.JsonObject;
 import inz.inzynierka.praca.GlobalVariables;
 import inz.inzynierka.praca.services.UserServiceImpl;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.util.Strings;
 import org.springframework.context.annotation.Lazy;
@@ -24,21 +30,21 @@ import javax.servlet.http.HttpServletResponse;
 import javax.xml.bind.DatatypeConverter;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
-@Component
-public class jwtTokenVerifier extends OncePerRequestFilter {
-    private final UserServiceImpl jwtUserDetailsService;
-    private final JwTokenUtil jwtTokenUtil;
+import static java.util.Arrays.stream;
+import static org.springframework.http.HttpStatus.FORBIDDEN;
 
-    public jwtTokenVerifier(@Lazy UserServiceImpl jwtUserDetailsService, JwTokenUtil jwtTokenUtil) {
-        this.jwtUserDetailsService = jwtUserDetailsService;
-        this.jwtTokenUtil = jwtTokenUtil;
-    }
+@Component@Slf4j
+public class jwtTokenVerifier extends OncePerRequestFilter {
+//    private final UserServiceImpl jwtUserDetailsService;
+//    private final JwTokenUtil jwtTokenUtil;
+//
+//    public jwtTokenVerifier(@Lazy UserServiceImpl jwtUserDetailsService, JwTokenUtil jwtTokenUtil) {
+//        this.jwtUserDetailsService = jwtUserDetailsService;
+//        this.jwtTokenUtil = jwtTokenUtil;
+//    }
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
@@ -81,38 +87,71 @@ public class jwtTokenVerifier extends OncePerRequestFilter {
 //            }
 //        }
 //        filterChain.doFilter(request, response);
-
-        if (Strings.isEmpty(authorizationHeader) || !authorizationHeader.startsWith("Bearer ")) {
-            filterChain.doFilter(request, response);
-            return;
+        if(request.getServletPath().equals("/login")){
+            filterChain.doFilter(request,response);
         }
+        else{
+            if(authorizationHeader != null && authorizationHeader.startsWith("Bearer ")){
+                try{
+                    String token = authorizationHeader.substring("Bearer ".length());
+                    Algorithm algorithm = Algorithm.HMAC256("secret".getBytes());
+                    JWTVerifier verifier = JWT.require(algorithm).build();
+                    DecodedJWT decodedJWT = verifier.verify(token);
+                    String username = decodedJWT.getSubject();
+                    String[] roles = decodedJWT.getClaim("roles").asArray(String.class);
+                    Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
+                    stream(roles).forEach(role -> {
+                        authorities.add(new SimpleGrantedAuthority(role));
+                    });
 
-        try {
-            String token = authorizationHeader.replace("Bearer ", "");
-            Jws<Claims> claimsJws = Jwts.parserBuilder().setSigningKey(Keys.hmacShaKeyFor(GlobalVariables.getToken_key().getBytes())).build().parseClaimsJws(token);
-            Claims body = claimsJws.getBody();
-            String username = body.getSubject();
-//            String username = jwtTokenUtil.getUsernameFromToken(token);
-//            UserDetails userDetails = jwtUserDetailsService.loadUserByUsername(username);
-            var authorities = (List<Map<String,String>>) body.get("roles");
+                    UsernamePasswordAuthenticationToken authenticationToken =
+                            new UsernamePasswordAuthenticationToken(username, null, authorities);
 
-            Set<SimpleGrantedAuthority> simpleGrantedAuthoritySet = authorities.stream().map(m -> new SimpleGrantedAuthority(m.get("authority"))).collect(Collectors.toSet());
+                    SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+                    filterChain.doFilter(request, response);
 
-            Authentication authentication =  new UsernamePasswordAuthenticationToken(username,null,simpleGrantedAuthoritySet);
-            SecurityContextHolder.getContext().setAuthentication(authentication);
+                }catch(Exception exception){
+                    log.error("Error logging in: {}", exception.getMessage());
+                    response.setHeader("error", exception.getMessage());
+                    response.sendError(FORBIDDEN.value());
+                }
+            }else{
+                filterChain.doFilter(request,response);
+            }
+
+            }
         }
-        catch (JwtException e)
-        {
-            throw new IllegalStateException("Token cannot be trusted");
-        }
-        catch (IllegalArgumentException e) {
-            logger.error("Unable to fetch JWT Token");
-        } catch (Exception e) {
-            logger.error(e.getMessage());
-        }
-
-        filterChain.doFilter(request,response);
-    }
+//        if (Strings.isEmpty(authorizationHeader) || !authorizationHeader.startsWith("Bearer ")) {
+//            filterChain.doFilter(request, response);
+//            return;
+//        }
+//
+//        try {
+//            String token = authorizationHeader.replace("Bearer ", "");
+//            Jws<Claims> claimsJws = Jwts.parserBuilder().setSigningKey(Keys.hmacShaKeyFor(GlobalVariables.getToken_key().getBytes())).build().parseClaimsJws(token);
+//            Claims body = claimsJws.getBody();
+//            String username = body.getSubject();
+////            String username = jwtTokenUtil.getUsernameFromToken(token);
+////            UserDetails userDetails = jwtUserDetailsService.loadUserByUsername(username);
+//            var authorities = (List<Map<String,String>>) body.get("UserRole");
+//
+//            Set<SimpleGrantedAuthority> simpleGrantedAuthoritySet = authorities.stream().map(m -> new SimpleGrantedAuthority(m.get("authority"))).collect(Collectors.toSet());
+//
+//            Authentication authentication =  new UsernamePasswordAuthenticationToken(username,null,simpleGrantedAuthoritySet);
+//            SecurityContextHolder.getContext().setAuthentication(authentication);
+//        }
+//        catch (JwtException e)
+//        {
+//            throw new IllegalStateException("Token cannot be trusted");
+//        }
+//        catch (IllegalArgumentException e) {
+//            logger.error("Unable to fetch JWT Token");
+//        } catch (Exception e) {
+//            logger.error(e.getMessage());
+//        }
+//
+//        filterChain.doFilter(request,response);
+//    }
 //    private final UserServiceImpl jwtUserDetailsService;
 //    private final JwTokenUtil jwtTokenUtil;
 //

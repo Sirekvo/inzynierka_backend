@@ -33,18 +33,23 @@ public class  UserController {
         userServices.saveUser(userEntity);
     }
     @PutMapping("/change-password")
-    public void changePassword(@RequestBody UserEntity userEntity ){
-        userServices.changePassword(userEntity);
+    public void changePassword(@RequestBody UserEntity userEntity, Principal principal ){
+        userServices.changePassword(userEntity, principal.getName());
     }
     @PutMapping("/change-information")
-    public void changeInformation(@RequestBody UserEntity userEntity ){
-        userServices.changeInformation(userEntity);
+    public void changeInformation(@RequestBody UserEntity userEntity, Principal principal ){
+        userServices.changeInformation(userEntity, principal.getName());
     }
 
 
     @DeleteMapping("/delete-user/{account_id}")
     public void deleteUSer(@PathVariable("account_id") Long id){
-        userRepository.deleteById(id);
+        userServices.deleteUser(id);
+    }
+
+    @GetMapping("/user")
+    public String getUserInformation(Principal principal) {
+        return userServices.getInformationAboutUser(principal.getName());
     }
 
 //    @PostMapping("/user/save")

@@ -18,11 +18,15 @@ public interface UserServices {
     
     SlidersEntity saveSlider(SlidersEntity slidersEntity);
 
-    void changePassword(UserEntity userEntity);
+    void changePassword(UserEntity userEntity, String name);
 
-    void changeInformation(UserEntity userEntity);
+    void changeInformation(UserEntity userEntity, String name);
 
     CommentsEntity saveComment(CommentsEntity commentsEntity);
 
     List<CommentsEntity> searchBySeriesId(Long id);
+
+    String getInformationAboutUser(String email);
+
+    void deleteUser(Long id);
 }

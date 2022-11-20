@@ -12,13 +12,23 @@ public interface UserRepository extends JpaRepository<UserEntity, Long> {
 
     @Transactional
     @Modifying
-    @Query(value="UPDATE users SET password = (?2) WHERE account_id = (?1)", nativeQuery = true)
-    void changePassword(Long account_id, String password);
+    @Query(value="UPDATE users SET password = (?2) WHERE email = (?1)", nativeQuery = true)
+    void changePassword(String email, String password);
 
     @Transactional
     @Modifying
-    @Query(value="UPDATE users SET email = (?2), name = (?3), lastname = (?4) WHERE account_id = (?1)", nativeQuery = true)
-    void changeInformation(Long account_id, String email, String name, String lastname);
+    @Query(value="UPDATE users SET email = (?2), name = (?3), lastname = (?4) WHERE email = (?1)", nativeQuery = true)
+    void changeInformation(String main_email, String email, String name, String lastname);
+
+    @Transactional
+    @Modifying
+    @Query(value="SELECT password FROM users WHERE email = (?1)",nativeQuery = true)
+    String getPassword(String email);
+
+    @Transactional
+    @Modifying
+    @Query(value="DELETE FROM users WHERE account_id = (?1)",nativeQuery = true)
+    void deleteUser(Long id);
 
 //    @Transactional
 //    @Modifying
@@ -29,4 +39,5 @@ public interface UserRepository extends JpaRepository<UserEntity, Long> {
     //    @Override
 //    Optional<UserEntity> findByEmail(String email);
     UserEntity findByEmail(String email);
+
 }

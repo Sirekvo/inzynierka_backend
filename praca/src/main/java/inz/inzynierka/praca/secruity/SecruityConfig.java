@@ -56,7 +56,8 @@ public class SecruityConfig extends WebSecurityConfigurerAdapter {
         http.sessionManagement().sessionCreationPolicy(STATELESS);
         http.authorizeRequests().anyRequest().permitAll();
         http.addFilter(new AuthenticationFilter(authenticationManagerBean()));
-        http.addFilterAfter(jwtTokenVerifier, AuthenticationFilter.class);
+        http.addFilterAfter(new jwtTokenVerifier(), AuthenticationFilter.class);
+//        http.addFilterBefore(new AuthenticationFilter(), Usern)
 
 //        http.authorizeRequests()
 //                .antMatchers(HttpMethod.POST,"/login").permitAll()
