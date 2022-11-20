@@ -70,6 +70,10 @@ public class UserServiceImpl implements UserServices, UserDetailsService {
     @Override
     public void changePassword(UserEntity userEntity, String name) {
         String databasePassword = userRepository.getPassword(name);
+        if (!passwordEncoder.matches(userEntity.getPassword(), databasePassword)) {
+            throw new IllegalStateException("Wrong old password");
+        }
+
         userRepository.changePassword(name,passwordEncoder.encode(databasePassword));
     }
 
@@ -95,7 +99,6 @@ public class UserServiceImpl implements UserServices, UserDetailsService {
         JsonObject json = new JsonObject();
         json.addProperty("account_id", user.getAccount_id());
         json.addProperty("email", user.getEmail());
-        json.addProperty("password", user.getPassword());
         json.addProperty("name", user.getName());
         json.addProperty("lastname", user.getLastname());
         json.addProperty("role", user.getRole());
