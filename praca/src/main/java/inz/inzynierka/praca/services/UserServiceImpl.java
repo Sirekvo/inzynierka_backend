@@ -111,6 +111,16 @@ public class UserServiceImpl implements UserServices, UserDetailsService {
         userRepository.deleteUser(id);
     }
 
+    @Override
+    public void updateSlider(SlidersEntity sliders) {
+        slidersRepository.updateSlider(sliders.getSlider_id(),sliders.getUrl());
+    }
+
+    @Override
+    public void deleteSlider(Long id) {
+        slidersRepository.deleteSlider(id);
+    }
+
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {

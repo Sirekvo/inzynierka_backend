@@ -6,10 +6,7 @@ import inz.inzynierka.praca.repositories.SlidersRepository;
 import inz.inzynierka.praca.repositories.UserRepository;
 import inz.inzynierka.praca.services.UserServices;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -30,5 +27,13 @@ public class SlidersControler {
     @GetMapping("/sliders")
     public List<SlidersEntity> getSliders(){
         return slidersRepository.findAll();
+    }
+    @PutMapping("/sliders")
+    public void updateSlider(@RequestBody SlidersEntity sliders ){
+        userServices.updateSlider(sliders);
+    }
+    @DeleteMapping("/sliders/{slider_id}")
+    public void deleteSlider(@PathVariable("slider_id") Long id){
+        userServices.deleteSlider(id);
     }
 }

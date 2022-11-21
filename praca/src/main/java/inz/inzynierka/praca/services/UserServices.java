@@ -29,4 +29,8 @@ public interface UserServices {
     String getInformationAboutUser(String email);
 
     void deleteUser(Long id);
+
+    void updateSlider(SlidersEntity sliders);
+
+    void deleteSlider(Long id);
 }
