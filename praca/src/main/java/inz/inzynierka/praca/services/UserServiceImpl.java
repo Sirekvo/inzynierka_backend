@@ -62,10 +62,13 @@ public class UserServiceImpl implements UserServices, UserDetailsService {
         return seriesRepository.searchByTitle(title);
     }
 
-    @Override
-    public SlidersEntity saveSlider(SlidersEntity slidersEntity) {
-        return slidersRepository.save(slidersEntity);
-    }
+//    @Override
+//    public SlidersEntity saveSlider(String[] param) {
+////        for(int i=0; i< param.length; i++){
+////            slidersRepository.save(param[i])
+////        }
+//        return slidersRepository.saveAll(param);
+//    }
 
     @Override
     public void changePassword(UserEntity userEntity, String name) {

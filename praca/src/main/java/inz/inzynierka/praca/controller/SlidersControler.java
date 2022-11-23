@@ -21,8 +21,10 @@ public class SlidersControler {
     @Autowired
     UserServices userServices;
     @PostMapping("/sliders")
-    public void setSlider(@RequestBody SlidersEntity sliders){
-        userServices.saveSlider(sliders);
+    public void setSlider(@RequestBody List<SlidersEntity> paramValues){
+//        userServices.saveSlider(paramValues);
+        slidersRepository.deleteAll();
+        slidersRepository.saveAll(paramValues);
     }
     @GetMapping("/sliders")
     public List<SlidersEntity> getSliders(){

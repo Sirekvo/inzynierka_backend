@@ -16,7 +16,7 @@ public interface UserServices {
     
     List<SeriesEntity> searchByTitle(String title);
     
-    SlidersEntity saveSlider(SlidersEntity slidersEntity);
+//    SlidersEntity saveSlider(String[] param);
 
     void changePassword(UserEntity userEntity, String name);
 
