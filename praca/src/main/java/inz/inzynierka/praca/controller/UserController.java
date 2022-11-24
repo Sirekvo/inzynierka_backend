@@ -1,5 +1,6 @@
 package inz.inzynierka.praca.controller;
 
+import inz.inzynierka.praca.entites.BoolForm;
 import inz.inzynierka.praca.entites.UserEntity;
 import inz.inzynierka.praca.repositories.SeriesRepository;
 import inz.inzynierka.praca.repositories.SlidersRepository;
@@ -50,6 +51,10 @@ public class  UserController {
     @GetMapping("/user")
     public String getUserInformation(Principal principal) {
         return userServices.getInformationAboutUser(principal.getName());
+    }
+    @GetMapping("/check-email/{email}")
+    public BoolForm checkEmail(@PathVariable("email") String email) {
+        return userServices.checkEmail(email);
     }
 
 //    @PostMapping("/user/save")

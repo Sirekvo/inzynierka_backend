@@ -1,14 +1,8 @@
 package inz.inzynierka.praca.services;
 
 import com.google.gson.JsonObject;
-import inz.inzynierka.praca.entites.CommentsEntity;
-import inz.inzynierka.praca.entites.SeriesEntity;
-import inz.inzynierka.praca.entites.SlidersEntity;
-import inz.inzynierka.praca.entites.UserEntity;
-import inz.inzynierka.praca.repositories.CommentsRepository;
-import inz.inzynierka.praca.repositories.SeriesRepository;
-import inz.inzynierka.praca.repositories.SlidersRepository;
-import inz.inzynierka.praca.repositories.UserRepository;
+import inz.inzynierka.praca.entites.*;
+import inz.inzynierka.praca.repositories.*;
 import inz.inzynierka.praca.secruity.JwTokenUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -97,7 +91,7 @@ public class UserServiceImpl implements UserServices, UserDetailsService {
 
     @Override
     public String getInformationAboutUser(String email) {
-        UserEntity user = userRepository.findByEmail(email);
+        UserEntity user = userRepository.findByEmail(email).orElseThrow(() -> new UsernameNotFoundException("user with email " + email + "not found"));
 
         JsonObject json = new JsonObject();
         json.addProperty("account_id", user.getAccount_id());
@@ -124,23 +118,35 @@ public class UserServiceImpl implements UserServices, UserDetailsService {
         slidersRepository.deleteSlider(id);
     }
 
+    @Override
+    public BoolForm checkEmail(String email) {
+
+        BoolForm boolForm = new BoolForm();
+        boolean userAlreadyExist = userRepository.findByEmail(email).isPresent();
+
+        boolForm.setExists(userAlreadyExist);
+
+        return boolForm;
+
+    }
+
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
 
-        UserEntity user = userRepository.findByEmail(email);
-        if(user == null){
-            log.error("brak usera w bazie");
-            throw new UsernameNotFoundException("User not found in the database");
-        } else {
-            log.info("User znaleziony w bazie");
-        }
-//        Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
+        return userRepository.findByEmail(email).orElseThrow(() -> new UsernameNotFoundException("user with email " + email + "not found"));
+//        if(user == null){
+//            log.error("brak usera w bazie");
+//            throw new UsernameNotFoundException("User not found in the database");
+//        } else {
+//            log.info("User znaleziony w bazie");
+//        }
+////        Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
+////        authorities.add(new SimpleGrantedAuthority(user.getRole()));
+//        List<GrantedAuthority> authorities = new ArrayList<>();
 //        authorities.add(new SimpleGrantedAuthority(user.getRole()));
-        List<GrantedAuthority> authorities = new ArrayList<>();
-        authorities.add(new SimpleGrantedAuthority(user.getRole()));
-
-        return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(), authorities);
+//
+//        return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(), authorities);
     }
 
 }

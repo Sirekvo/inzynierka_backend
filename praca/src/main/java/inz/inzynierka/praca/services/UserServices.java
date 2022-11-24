@@ -1,9 +1,6 @@
 package inz.inzynierka.praca.services;
 
-import inz.inzynierka.praca.entites.CommentsEntity;
-import inz.inzynierka.praca.entites.SeriesEntity;
-import inz.inzynierka.praca.entites.SlidersEntity;
-import inz.inzynierka.praca.entites.UserEntity;
+import inz.inzynierka.praca.entites.*;
 
 import java.util.List;
 
@@ -33,4 +30,6 @@ public interface UserServices {
     void updateSlider(SlidersEntity sliders);
 
     void deleteSlider(Long id);
+
+    BoolForm checkEmail(String email);
 }
