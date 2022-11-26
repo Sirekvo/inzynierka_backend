@@ -21,8 +21,10 @@ public class SeriesEntity {
     private String premiere;
     private String description;
     private String url;
+    private String post_creator;
+    private String creation_date;
 
-    public SeriesEntity(Long series_id, String title, String creator, String genre, String production, String premiere, String description, String url) {
+    public SeriesEntity(Long series_id, String title, String creator, String genre, String production, String premiere, String description, String url, String post_creator, String creation_date) {
         this.series_id = series_id;
         this.title = title;
         this.creator = creator;
@@ -31,10 +33,28 @@ public class SeriesEntity {
         this.premiere = premiere;
         this.description = description;
         this.url = url;
+        this.post_creator = post_creator;
+        this.creation_date = creation_date;
     }
 
     public SeriesEntity() {
 
+    }
+
+    public String getCreation_date() {
+        return creation_date;
+    }
+
+    public void setCreation_date(String creation_date) {
+        this.creation_date = creation_date;
+    }
+
+    public String getPost_creator() {
+        return post_creator;
+    }
+
+    public void setPost_creator(String post_creator) {
+        this.post_creator = post_creator;
     }
 
     public Long getSeries_id() {

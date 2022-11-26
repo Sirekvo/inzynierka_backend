@@ -41,8 +41,6 @@ public class  UserController {
     public void changeInformation(@RequestBody UserEntity userEntity, Principal principal ){
         userServices.changeInformation(userEntity, principal.getName());
     }
-
-
     @DeleteMapping("/delete-user/{account_id}")
     public void deleteUSer(@PathVariable("account_id") Long id){
         userServices.deleteUser(id);
@@ -56,7 +54,10 @@ public class  UserController {
     public BoolForm checkEmail(@PathVariable("email") String email) {
         return userServices.checkEmail(email);
     }
-
+    @PutMapping("/change-view")
+    public void changeView(@RequestBody UserEntity userEntity, Principal principal ){
+        userServices.changeView(userEntity, principal.getName());
+    }
 //    @PostMapping("/user/save")
 //    public ResponseEntity<UserEntity>saveUser(@RequestBody UserEntity user){
 //        URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/user/save").toString());

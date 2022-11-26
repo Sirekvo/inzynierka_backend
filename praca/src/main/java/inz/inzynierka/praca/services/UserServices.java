@@ -32,4 +32,6 @@ public interface UserServices {
     void deleteSlider(Long id);
 
     BoolForm checkEmail(String email);
+
+    void changeView(UserEntity userEntity, String name);
 }

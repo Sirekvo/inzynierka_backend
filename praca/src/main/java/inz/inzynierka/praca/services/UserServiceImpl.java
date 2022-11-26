@@ -99,6 +99,7 @@ public class UserServiceImpl implements UserServices, UserDetailsService {
         json.addProperty("name", user.getName());
         json.addProperty("lastname", user.getLastname());
         json.addProperty("role", user.getRole());
+        json.addProperty("view", user.getView());
 
         return json.toString();
     }
@@ -130,23 +131,28 @@ public class UserServiceImpl implements UserServices, UserDetailsService {
 
     }
 
+    @Override
+    public void changeView(UserEntity userEntity, String name) {
+        userRepository.changeView(name,userEntity.getView());
+    }
+
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
 
-        return userRepository.findByEmail(email).orElseThrow(() -> new UsernameNotFoundException("user with email " + email + "not found"));
-//        if(user == null){
-//            log.error("brak usera w bazie");
-//            throw new UsernameNotFoundException("User not found in the database");
-//        } else {
-//            log.info("User znaleziony w bazie");
-//        }
-////        Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
-////        authorities.add(new SimpleGrantedAuthority(user.getRole()));
-//        List<GrantedAuthority> authorities = new ArrayList<>();
+        UserEntity user = userRepository.findByEmail(email).orElseThrow(() -> new UsernameNotFoundException("user with email " + email + "not found"));
+        if(user == null){
+            log.error("brak usera w bazie");
+            throw new UsernameNotFoundException("User not found in the database");
+        } else {
+            log.info("User znaleziony w bazie");
+        }
+//        Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
 //        authorities.add(new SimpleGrantedAuthority(user.getRole()));
-//
-//        return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(), authorities);
+        List<GrantedAuthority> authorities = new ArrayList<>();
+        authorities.add(new SimpleGrantedAuthority(user.getRole()));
+
+        return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(), authorities);
     }
 
 }

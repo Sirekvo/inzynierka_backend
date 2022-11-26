@@ -24,16 +24,17 @@ public class UserEntity implements UserDetails {
     private String name;
     private String lastname;
     private String role;
+    private Long view;
 
 
-
-    public UserEntity(Long account_id, String email, String password, String name, String lastname, String role) {
+    public UserEntity(Long account_id, String email, String password, String name, String lastname, String role, Long view) {
         this.account_id = account_id;
         this.email = email;
         this.password = password;
         this.name = name;
         this.lastname = lastname;
         this.role = role;
+        this.view = view;
     }
 
     public UserEntity() {
@@ -49,7 +50,16 @@ public class UserEntity implements UserDetails {
                 ", name='" + name + '\'' +
                 ", lastname='" + lastname + '\'' +
                 ", role='" + role + '\'' +
+                ", view=" + view +
                 '}';
+    }
+
+    public Long getView() {
+        return view;
+    }
+
+    public void setView(Long view) {
+        this.view = view;
     }
 
     public Long getAccount_id() {
