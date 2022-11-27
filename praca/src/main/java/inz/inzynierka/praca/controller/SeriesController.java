@@ -2,6 +2,7 @@ package inz.inzynierka.praca.controller;
 
 import inz.inzynierka.praca.entites.CommentsEntity;
 import inz.inzynierka.praca.entites.SeriesEntity;
+import inz.inzynierka.praca.repositories.CommentsRepository;
 import inz.inzynierka.praca.repositories.SeriesRepository;
 import inz.inzynierka.praca.repositories.SlidersRepository;
 import inz.inzynierka.praca.repositories.UserRepository;
@@ -20,6 +21,8 @@ public class SeriesController {
     SeriesRepository seriesRepository;
     @Autowired
     SlidersRepository slidersRepository;
+    @Autowired
+    CommentsRepository commentsRepository;
     @Autowired
     UserServices userServices;
 
@@ -55,5 +58,9 @@ public class SeriesController {
     @GetMapping("/comment/{series_id}")
     public List<CommentsEntity> getCommentsBySeriesId(@PathVariable("series_id") Long id){
         return userServices.searchBySeriesId(id);
+    }
+    @DeleteMapping("/comment/{comment_id}")
+    public void deleteComment(@PathVariable("comment_id") Long id){
+        commentsRepository.deleteById(id);
     }
 }

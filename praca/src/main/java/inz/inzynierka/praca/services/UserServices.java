@@ -34,4 +34,6 @@ public interface UserServices {
     BoolForm checkEmail(String email);
 
     void changeView(UserEntity userEntity, String name);
+
+    List<UserEntity> getRedactors();
 }

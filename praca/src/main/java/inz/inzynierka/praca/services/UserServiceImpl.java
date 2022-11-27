@@ -55,15 +55,6 @@ public class UserServiceImpl implements UserServices, UserDetailsService {
     public List<SeriesEntity> searchByTitle(String title) {
         return seriesRepository.searchByTitle(title);
     }
-
-//    @Override
-//    public SlidersEntity saveSlider(String[] param) {
-////        for(int i=0; i< param.length; i++){
-////            slidersRepository.save(param[i])
-////        }
-//        return slidersRepository.saveAll(param);
-//    }
-
     @Override
     public void changePassword(UserEntity userEntity, String name) {
         String databasePassword = userRepository.getPassword(name);
@@ -134,6 +125,11 @@ public class UserServiceImpl implements UserServices, UserDetailsService {
     @Override
     public void changeView(UserEntity userEntity, String name) {
         userRepository.changeView(name,userEntity.getView());
+    }
+
+    @Override
+    public List<UserEntity> getRedactors() {
+        return userRepository.getRedactors();
     }
 
 

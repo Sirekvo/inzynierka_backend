@@ -1,11 +1,13 @@
 package inz.inzynierka.praca.repositories;
 
+import inz.inzynierka.praca.entites.SeriesEntity;
 import inz.inzynierka.praca.entites.UserEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
 import javax.transaction.Transactional;
+import java.util.List;
 import java.util.Optional;
 
 public interface UserRepository extends JpaRepository<UserEntity, Long> {
@@ -34,6 +36,11 @@ public interface UserRepository extends JpaRepository<UserEntity, Long> {
     @Modifying
     @Query(value="UPDATE users SET view = (?2) WHERE email = (?1)", nativeQuery = true)
     void changeView(String email, Long view);
+
+    @Transactional
+    @Modifying
+    @Query(value="SELECT * FROM users WHERE role = 'redaktor'", nativeQuery = true)
+    List<UserEntity> getRedactors();
 
 //    @Transactional
 //    @Modifying

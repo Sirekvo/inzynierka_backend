@@ -25,10 +25,11 @@ public class  UserController {
     @Autowired
     UserServices userServices;
 
-    @GetMapping("/users")
-    public List<UserEntity> getUsers(){
-        return userRepository.findAll();
+    @GetMapping("/redactors")
+    public List<UserEntity> getRedactors(){
+        return userServices.getRedactors();
     }
+
     @PostMapping("/user")
     public void createUser(@RequestBody UserEntity userEntity){
         userServices.saveUser(userEntity);
@@ -42,7 +43,7 @@ public class  UserController {
         userServices.changeInformation(userEntity, principal.getName());
     }
     @DeleteMapping("/delete-user/{account_id}")
-    public void deleteUSer(@PathVariable("account_id") Long id){
+    public void deleteUser(@PathVariable("account_id") Long id){
         userServices.deleteUser(id);
     }
 
@@ -57,6 +58,10 @@ public class  UserController {
     @PutMapping("/change-view")
     public void changeView(@RequestBody UserEntity userEntity, Principal principal ){
         userServices.changeView(userEntity, principal.getName());
+    }
+    @DeleteMapping("/delete-redactor/{account_id}")
+    public void deleteRedactor(@PathVariable("account_id") Long id){
+        userServices.deleteUser(id);
     }
 //    @PostMapping("/user/save")
 //    public ResponseEntity<UserEntity>saveUser(@RequestBody UserEntity user){

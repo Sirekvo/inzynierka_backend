@@ -22,7 +22,7 @@ public interface SeriesRepository extends JpaRepository<SeriesEntity, Long> {
     List<SeriesEntity> findByTitleStartingWith(String title);
     @Transactional
     @Modifying
-    @Query(value="SELECT * FROM series WHERE title LIKE :title||'%'", nativeQuery = true)
+    @Query(value="SELECT * FROM series WHERE LOWER(title) LIKE LOWER(:title||'%')", nativeQuery = true)
     List<SeriesEntity> searchByTitle(@Param("title") String title);
 //    public void updatePost(@Param("series_id") Long series_id, @Param("title") String title, @Param("creator") String creator,
 //                           @Param("genre") String genre, @Param("production") String production, @Param("description") String description,
